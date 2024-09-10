@@ -129,6 +129,29 @@ class fun8(APIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Student.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+        
+
+class genericapiview(generics.GenericAPIView,mixins.ListModelMixin,mixins.CreateModelMixin):
+    serializer_class=model_serializer
+    queryset=Student.objects.all()
+    def get(self,req):
+        return self.list(req)
+    def post(self,req):
+        return self.create(req)
+
+
+class update(generics.GenericAPIView,mixins.RetrieveModelMixin,mixins.updateModelMixin,mixins.DestroyModelMixins):
+    serializer_class=model_serializer
+    queryset=Student.objects.all()
+    lookup_field='id'
+    def get(self,req,id=None):
+        return self.retrieve(req)
+    def put(self,req,id=None):
+        return self.update(req,id)
+    def delete(self,req,id):
+        return self.destroy(req,id)
+
+        
 
          
           
